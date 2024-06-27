@@ -17,6 +17,7 @@
 ## 4. qemu内启动程序
 
 ```sh
+console:/ # setprop log.tag.futex_test V
 console:/ # cd /data
 console:/data # gdbserver64 --no-startup-with-shell 127.0.0.1:5039 ./futex_test
 ```
