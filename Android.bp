@@ -1,0 +1,64 @@
+package {
+    default_applicable_licenses: ["external_futex_license"],
+}
+
+license {
+    name: "external_futex_license",
+    visibility: [":__subpackages__"],
+    license_kinds: [
+        "SPDX-license-identifier-BSD",
+        "SPDX-license-identifier-FSFAP",
+        "SPDX-license-identifier-MIT",
+        "legacy_notice",
+        "legacy_unencumbered",
+    ],
+    license_text: [
+        "COPYING",
+    ],
+}
+
+cc_binary {
+
+    srcs: [
+        "mutex.cc",
+    ],
+
+    cflags: ["-DHAVE_CONFIG_H"] + [
+        "-DSIZEOF_KERNEL_LONG_T=SIZEOF_LONG",
+        "-DSIZEOF_OFF_T=SIZEOF_LONG",
+    ] + [
+        "-Wall",
+        "-Werror",
+        "-Wno-initializer-overrides",
+        "-Wno-missing-field-initializers",
+        "-Wno-pointer-arith",
+        "-Wno-unused-parameter",
+        "-Wno-sign-compare",
+        "-fno-strict-aliasing",
+    ],
+    multilib: {
+        lib32: {
+            cflags: [
+                "-DSIZEOF_LONG_LONG=8",
+                "-DSIZEOF_LONG=4",
+                "-DSIZEOF_RLIM_T=4",
+                "-DHAVE_STRUCT_STAT64=1",
+            ],
+        },
+        lib64: {
+            cflags: [
+                "-DSIZEOF_LONG_LONG=8",
+                "-DSIZEOF_LONG=8",
+                "-DSIZEOF_RLIM_T=8",
+            ],
+        },
+    },
+    shared_libs: [
+        "libbacktrace",
+        "libbase", // For common macros.
+        "liblog",
+        "libunwindstack",
+    ],
+
+    name: "futex_test",
+}
