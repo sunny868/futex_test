@@ -1,4 +1,30 @@
-# LA编译方式
+# Loongnix 编译/运行方式
+
+```sh
+$ gcc futex_linux.c -lpthread
+$ gdbserver --no-startup-with-shell 127.0.0.1:5039 ./a.out
+```
+另起终端gdb client连接并执行
+```sh
+$ gdb
+(gdb) target extended-remote :5039
+(gdb) c
+Continuing.
+Reading /lib/loongarch64-linux-gnu/libpthread.so.0 from remote target...
+Reading /lib/loongarch64-linux-gnu/libc.so.6 from remote target...
+[New Thread 4393.4592]
+[New Thread 4393.4593]
+
+Thread 1 "a.out" received signal SIGINT, Interrupt.
+0x000000fff450d3f0 in kill () at ../sysdeps/unix/syscall-template.S:78
+78	../sysdeps/unix/syscall-template.S: 没有那个文件或目录.
+(gdb) c
+Continuing.
+[Inferior 1 (process 4393) exited normally]
+(gdb) 
+```
+
+# Android LA编译方式
 
 ## 1. 源码下载到aosp/external/下
  
